@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart Rate Monitoring</title>
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/865/865969.png" type="image/x-icon">
+
+  <link rel="stylesheet" href="/css/heart-beat/styles.css">
+  <link rel="stylesheet" href="/css/heart-beat/gauge.css">
+  <link rel="stylesheet" href="/css/heart-beat/gauge-glossy.css">
+</head>
+
+<body>
+  <!-- <div class="chartMenu">
+  </div> -->
+  <div id="toast">
+  </div>
+
+  <div class="tab">
+    <button type="button" class="tablinks" onclick="openMonitor(event, 'gauge')"><i
+        class="fa fa-tachometer-alt me-2"></i>Gauge</button>
+    <button type="button" class="tablinks" onclick="openMonitor(event, 'monitor')" id="defaultOpen"><i
+        class="fa fa-chart-bar me-2"></i>Monitor</button>
+    <hr>
+    <!-- <button type="button" id="btn_start_program" class="btn btn-success px-5">Bắt đầu đo</button>
+    <button type="button" disabled="disabled" id="btn_end_program" class="btn btn-warning px-5">Kết thúc</button> -->
+    <button type="button" id="btn_start_program"><i class="fa fa-play me-2"></i>Bắt đầu đo</button>
+    <button type="button" disabled="disabled" id="btn_end_program"><i class="fa fa-stop me-2"></i>Kết
+      thúc</button>
+    <hr>
+    <form action="/logout" method="post">
+      <button type="submit" class="tablinks"><i class="fa fa-sign-out-alt me-2"></i>Logout</button>
+    </form>
+  </div>
+
+  <div id="gauge" class="tabcontent">
+    <div class="gauge-example">
+      <div class="gauge-glossy">
+
+        <div style="display: flex;">
+          <div id="toast1-beat" style="visibility: hidden;">
+            <div class="toast-message toast--warning">
+              <div class="toast__icon">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="toast__body">
+                <h3 class="toast__title">Cảnh báo</h3>
+                <p class="toast__msg">Nhịp tim không bình thường!</p>
+              </div>
+              <div class="toast__close">
+                <i class="fa fa-times"></i>
+              </div>
+            </div>
+          </div>
+
+          <div id="toast1-oxy" style="visibility: hidden;">
+            <div class="toast-message toast--warning">
+              <div class="toast__icon">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="toast__body">
+                <h3 class="toast__title">Cảnh báo</h3>
+                <p class="toast__msg">Nhịp tim không bình thường!</p>
+              </div>
+              <div class="toast__close">
+                <i class="fa fa-times"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div style="display: flex;">
+          <div id="beatGauge" class="gauge" style="
+              --gauge-bg: #088478;
+              --gauge-value:0;
+              --gauge-display-value:0;
+              width:25vw;
+              height:25vw;
+              margin-bottom: 50px;">
+            <div class="ticks" id="ticks">
+              <div class="tithe" style="--gauge-tithe-tick:1;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:2;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:3;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:4;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:6;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:7;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:8;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:9;"></div>
+              <div class="min"></div>
+              <div class="mid"></div>
+              <div class="max"></div>
+            </div>
+            <div class="tick-circle"></div>
+            <div class="needle">
+              <div class="needle-head"></div>
+            </div>
+            <div class="labels">
+              <div id="beat-value" class="value-label" style="--gauge-color: white">BPM: </div>
+            </div>
+          </div>
+
+          <div style="margin: 40px;"></div>
+
+          <div id="oxyGauge" class="gauge" style="
+        --gauge-bg: #088478;
+        --gauge-value:0;
+        --gauge-display-value:0;
+        width:25vw;
+        height:25vw;
+        margin-bottom: 50px;">
+            <div class="ticks" id="ticks-2">
+              <div class="tithe" style="--gauge-tithe-tick:1;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:2;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:3;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:4;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:6;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:7;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:8;"></div>
+              <div class="tithe" style="--gauge-tithe-tick:9;"></div>
+              <div class="min"></div>
+              <div class="mid"></div>
+              <div class="max"></div>
+            </div>
+            <div class="tick-circle"></div>
+            <div class="needle">
+              <div class="needle-head"></div>
+            </div>
+            <div class="labels">
+              <div id="spo2-value" class="value-label" style="--gauge-color: white">SpO2: </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="monitor" class="tabcontent">
+
+    <div class="chartCard">
+
+      <div style="display: flex;">
+        <div id="toast2-beat" style="visibility: hidden;">
+          <div class="toast-message toast--warning">
+            <div class="toast__icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="toast__body">
+              <h3 class="toast__title">Cảnh báo</h3>
+              <p class="toast__msg"></p>
+            </div>
+            <div class="toast__close">
+              <i class="fa fa-times"></i>
+            </div>
+          </div>
+        </div>
+
+        <div id="toast2-oxy" style="visibility: hidden;">
+          <div class="toast-message toast--warning">
+            <div class="toast__icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="toast__body">
+              <h3 class="toast__title">Cảnh báo</h3>
+              <p class="toast__msg"></p>
+            </div>
+            <div class="toast__close">
+              <i class="fa fa-times"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+        <p id="chartText" class="chartText"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- <canvas id="beat-value-test" data-type="radial-gauge" data-width="400" data-height="400" data-units="Km/h"
+    data-title="false" data-value="100" data-animate-on-init="true" data-animated-value="true" data-min-value="0"
+    data-max-value="220" data-major-ticks="0,20,40,60,80,100,120,140,160,180,200,220" data-minor-ticks="2"
+    data-stroke-ticks="false" data-highlights="[
+            { &quot;from&quot;: 0, &quot;to&quot;: 50, &quot;color&quot;: &quot;rgba(0,255,0,.15)&quot; },
+            { &quot;from&quot;: 50, &quot;to&quot;: 100, &quot;color&quot;: &quot;rgba(255,255,0,.15)&quot; },
+            { &quot;from&quot;: 100, &quot;to&quot;: 150, &quot;color&quot;: &quot;rgba(255,30,0,.25)&quot; },
+            { &quot;from&quot;: 150, &quot;to&quot;: 200, &quot;color&quot;: &quot;rgba(255,0,225,.25)&quot; },
+            { &quot;from&quot;: 200, &quot;to&quot;: 220, &quot;color&quot;: &quot;rgba(0,0,255,.25)&quot; }
+        ]" data-color-plate="#222" data-color-major-ticks="#f5f5f5" data-color-minor-ticks="#ddd"
+    data-color-title="#fff" data-color-units="#ccc" data-color-numbers="#eee"
+    data-color-needle-start="rgba(240, 128, 128, 1)" data-color-needle-end="rgba(255, 160, 122, .9)"
+    data-value-box="true" data-animation-rule="bounce" data-animation-duration="500" data-font-value="Led"
+    data-font-numbers="Led" width="600" height="600" style="width: 400px; height: 400px; visibility: visible;"></canvas> -->
+
+  <!-- references -->
+  <!-- https://nagix.github.io/chartjs-plugin-streaming/latest/guide/options.html -->
+  <!-- https://www.chartjs.org/docs/latest/getting-started/ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.1.1/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.0/dist/chartjs-adapter-luxon.umd.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0/dist/chartjs-plugin-streaming.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script type="module" src="/js/heart-beat/firebase.js"></script>
+  <script type="module" src="/js/heart-beat/chart.js"></script>
+
+  <script src="/js/heart-beat/tabs-event.js"></script>
+  <script src="/js/heart-beat/gauge.min.js"></script>
+
+</body>
+
+</html>
