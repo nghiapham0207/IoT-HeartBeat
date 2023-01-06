@@ -1,2 +1,2 @@
 # IoT-HeartBeat
-- Đo nhịp tim băng cảm biến max30100
+- Đo nhịp tim bằng cảm biến max30100
