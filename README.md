@@ -1,3 +1,2 @@
 # IoT-HeartBeat
-
-## Đo nhịp tim theo dõi sức khỏe
+- Đo nhịp tim băng cảm biến max30100
